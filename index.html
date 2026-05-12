@@ -4,20 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aviso de Pago por Voz | Ivatronics</title>
-  <meta name="description" content="Aplicativo que anuncia tus pagos por voz automáticamente. Ideal para negocios, bodegas, delivery, mototaxis y emprendedores." />
+  <meta name="description" content="Aplicativo que anuncia tus pagos por voz automáticamente. Ideal para negocios, tiendas, bodegas, delivery, mototaxis y emprendedores." />
+  <meta name="theme-color" content="#06111f" />
 
   <style>
     :root{
-      --bg:#07111f;
-      --card:#101c2f;
-      --card2:#13233b;
-      --blue:#27a8ff;
-      --cyan:#18e0ff;
-      --green:#22c55e;
-      --yellow:#facc15;
+      --bg:#06111f;
+      --bg2:#09192c;
+      --card:#0e1d33;
+      --card2:#10243f;
+      --line:rgba(255,255,255,.10);
       --text:#ffffff;
-      --muted:#b8c4d6;
-      --danger:#fb7185;
+      --muted:#b6c4d8;
+      --blue:#25a7ff;
+      --cyan:#20e7ff;
+      --green:#22c55e;
+      --green2:#16a34a;
+      --yellow:#fde047;
+      --orange:#fb923c;
+      --red:#fb7185;
+      --shadow:0 24px 80px rgba(0,0,0,.38);
+      --radius:26px;
     }
 
     *{box-sizing:border-box}
@@ -25,295 +32,595 @@
     body{
       margin:0;
       font-family:Arial, Helvetica, sans-serif;
-      background:radial-gradient(circle at top,#11345b 0%,#07111f 42%,#050914 100%);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(37,167,255,.28), transparent 34%),
+        radial-gradient(circle at 90% 8%, rgba(34,197,94,.18), transparent 32%),
+        linear-gradient(180deg,#06111f,#050914 62%,#030712);
       color:var(--text);
+      overflow-x:hidden;
+    }
+
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size:44px 44px;
+      mask-image:linear-gradient(to bottom, black, transparent 78%);
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    a{color:inherit}
+    img,video,iframe{max-width:100%}
+
+    .container{
+      width:min(1140px,92%);
+      margin:auto;
     }
 
     .topbar{
       position:sticky;
       top:0;
-      z-index:100;
-      background:rgba(7,17,31,.88);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid rgba(255,255,255,.08);
-      padding:12px 18px;
+      z-index:1000;
+      background:rgba(6,17,31,.82);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--line);
+    }
+
+    .topbar-inner{
+      min-height:72px;
       display:flex;
-      justify-content:space-between;
       align-items:center;
+      justify-content:space-between;
+      gap:18px;
     }
 
     .brand{
-      font-weight:900;
-      letter-spacing:.5px;
-      color:#fff;
       display:flex;
       align-items:center;
-      gap:8px;
-    }
-
-    .logo{
-      width:36px;
-      height:36px;
-      border-radius:50%;
-      background:linear-gradient(135deg,var(--blue),var(--cyan));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      box-shadow:0 0 22px rgba(24,224,255,.45);
-    }
-
-    .nav a{
-      color:#dbeafe;
+      gap:12px;
       text-decoration:none;
-      margin-left:14px;
+      font-weight:900;
+      letter-spacing:.3px;
+    }
+
+    .brand-mark{
+      width:42px;
+      height:42px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      color:#03111f;
+      font-weight:1000;
+      background:linear-gradient(135deg,var(--cyan),var(--green));
+      box-shadow:0 0 32px rgba(32,231,255,.36);
+    }
+
+    .brand small{
+      display:block;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+      margin-top:2px;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      color:#dbeafe;
+      font-weight:700;
       font-size:14px;
     }
 
-    .hero{
-      padding:70px 18px 45px;
-      text-align:center;
-      max-width:1100px;
-      margin:auto;
+    .nav a{
+      text-decoration:none;
+      opacity:.88;
     }
 
-    .badge{
-      display:inline-block;
-      padding:9px 15px;
+    .nav a:hover{opacity:1;color:var(--cyan)}
+
+    .mini-whatsapp{
+      padding:11px 15px;
       border-radius:999px;
-      background:rgba(39,168,255,.14);
-      border:1px solid rgba(24,224,255,.32);
-      color:#c8f6ff;
-      font-weight:700;
+      background:var(--green);
+      color:#fff;
+      text-decoration:none;
+      font-weight:900;
+      box-shadow:0 10px 28px rgba(34,197,94,.25);
+    }
+
+    .hero{
+      padding:74px 0 44px;
+      position:relative;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.08fr .92fr;
+      gap:42px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border:1px solid rgba(32,231,255,.35);
+      border-radius:999px;
+      background:rgba(32,231,255,.10);
+      color:#d9fbff;
+      font-weight:900;
       margin-bottom:18px;
     }
 
     h1{
-      font-size:clamp(34px,7vw,68px);
-      line-height:1.02;
-      margin:0 0 18px;
+      margin:0;
+      font-size:clamp(38px,6vw,74px);
+      line-height:.98;
+      letter-spacing:-2.2px;
     }
 
-    .gradient-text{
-      background:linear-gradient(90deg,#fff,#4fdfff,#21ff9f);
+    .grad{
+      background:linear-gradient(90deg,#ffffff 0%,#9ff6ff 46%,#86efac 100%);
       -webkit-background-clip:text;
       background-clip:text;
       color:transparent;
     }
 
-    .subtitle{
+    .lead{
+      margin:22px 0 0;
       color:var(--muted);
-      font-size:clamp(18px,3vw,24px);
-      max-width:760px;
-      margin:0 auto 26px;
-      line-height:1.45;
+      font-size:clamp(18px,2.1vw,23px);
+      line-height:1.48;
+      max-width:710px;
     }
 
     .hero-actions{
       display:flex;
-      justify-content:center;
       flex-wrap:wrap;
       gap:14px;
-      margin-top:22px;
+      margin:28px 0 0;
     }
 
     .btn{
       border:0;
-      border-radius:16px;
-      padding:16px 24px;
-      font-size:18px;
-      font-weight:900;
-      cursor:pointer;
-      text-decoration:none;
+      border-radius:18px;
+      padding:16px 22px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      gap:8px;
-      transition:.25s;
+      gap:10px;
+      text-decoration:none;
+      font-weight:1000;
+      font-size:17px;
+      cursor:pointer;
+      transition:.22s ease;
+      min-height:54px;
     }
 
-    .btn:hover{transform:translateY(-3px);filter:brightness(1.08)}
-    .btn-whatsapp{background:var(--green);color:white;box-shadow:0 0 24px rgba(34,197,94,.28)}
-    .btn-demo{background:#fff;color:#0f172a}
-    .btn-blue{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#00111c}
+    .btn:hover{transform:translateY(-3px);filter:brightness(1.06)}
+    .btn-whatsapp{background:linear-gradient(135deg,var(--green),var(--green2));color:white;box-shadow:0 18px 38px rgba(34,197,94,.26)}
+    .btn-light{background:white;color:#07111f}
+    .btn-blue{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#03111f;box-shadow:0 18px 38px rgba(32,231,255,.18)}
+    .btn-outline{background:rgba(255,255,255,.06);border:1px solid var(--line);color:#e5f4ff}
 
-    .phone-demo{
-      width:min(390px,92vw);
-      margin:35px auto 0;
-      background:#050914;
-      border:10px solid #1e293b;
-      border-radius:38px;
-      padding:22px;
-      box-shadow:0 28px 80px rgba(0,0,0,.45),0 0 60px rgba(24,224,255,.16);
-      position:relative;
-    }
-
-    .notification{
-      background:#111827;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:18px;
-      padding:16px;
-      text-align:left;
-      margin-bottom:18px;
-      animation:pulse 2.3s infinite;
-    }
-
-    @keyframes pulse{
-      0%,100%{box-shadow:0 0 0 rgba(24,224,255,0)}
-      50%{box-shadow:0 0 28px rgba(24,224,255,.22)}
-    }
-
-    .voice-box{
-      background:linear-gradient(135deg,#0f766e,#22c55e);
-      border-radius:18px;
-      padding:18px;
-      font-size:19px;
-      font-weight:900;
-      min-height:78px;
+    .trust-row{
       display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:24px;
+    }
+
+    .trust-pill{
+      padding:11px 13px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.055);
+      color:#dbeafe;
+      font-weight:800;
+      font-size:14px;
+    }
+
+    .demo-card{
+      border-radius:36px;
+      border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg,rgba(16,36,63,.92),rgba(5,9,20,.96));
+      box-shadow:var(--shadow),0 0 70px rgba(32,231,255,.14);
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .demo-card:before{
+      content:"";
+      position:absolute;
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      background:rgba(32,231,255,.18);
+      filter:blur(35px);
+      right:-120px;
+      top:-100px;
+    }
+
+    .phone{
+      position:relative;
+      z-index:1;
+      width:min(380px,100%);
+      margin:auto;
+      background:#050914;
+      border:10px solid #1f2937;
+      border-radius:42px;
+      padding:18px;
+      min-height:560px;
+    }
+
+    .phone-top{
+      width:90px;
+      height:6px;
+      background:#334155;
+      border-radius:20px;
+      margin:0 auto 18px;
+    }
+
+    .screen-title{
+      display:flex;
+      justify-content:space-between;
       align-items:center;
+      margin-bottom:16px;
+      font-weight:900;
+    }
+
+    .status-dot{
+      width:11px;
+      height:11px;
+      background:#22c55e;
+      border-radius:50%;
+      box-shadow:0 0 18px #22c55e;
+      display:inline-block;
+      margin-right:7px;
+    }
+
+    .pay-notification{
+      background:#111827;
+      border:1px solid rgba(255,255,255,.11);
+      border-radius:22px;
+      padding:16px;
+      margin-bottom:14px;
+      animation:glow 2.4s infinite;
+    }
+
+    @keyframes glow{
+      0%,100%{box-shadow:0 0 0 rgba(32,231,255,0)}
+      50%{box-shadow:0 0 30px rgba(32,231,255,.20)}
+    }
+
+    .pay-notification strong{display:block;margin-bottom:6px}
+    .pay-notification span{color:#cbd5e1;line-height:1.4}
+
+    .speaker{
+      background:linear-gradient(135deg,#0f766e,#22c55e);
+      border-radius:24px;
+      min-height:118px;
+      padding:18px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      font-size:20px;
+      font-weight:1000;
+      line-height:1.32;
+      margin:16px 0;
+    }
+
+    .volume-bars{
+      display:flex;
+      gap:8px;
+      align-items:end;
       justify-content:center;
+      height:56px;
+      margin:16px 0 20px;
+    }
+
+    .bar{
+      width:14px;
+      border-radius:9px;
+      background:linear-gradient(var(--cyan),var(--green));
+      animation:bars 1.1s infinite ease-in-out;
+    }
+
+    .bar:nth-child(1){height:18px;animation-delay:0s}
+    .bar:nth-child(2){height:34px;animation-delay:.12s}
+    .bar:nth-child(3){height:50px;animation-delay:.24s}
+    .bar:nth-child(4){height:28px;animation-delay:.36s}
+    .bar:nth-child(5){height:42px;animation-delay:.48s}
+
+    @keyframes bars{
+      0%,100%{transform:scaleY(.58);opacity:.7}
+      50%{transform:scaleY(1);opacity:1}
+    }
+
+    .phone-note{
+      color:#94a3b8;
+      text-align:center;
+      font-size:13px;
+      line-height:1.45;
     }
 
     section{
-      padding:55px 18px;
-      max-width:1120px;
-      margin:auto;
+      padding:58px 0;
     }
 
-    .section-title{
+    .section-head{
       text-align:center;
-      font-size:clamp(28px,5vw,44px);
-      margin:0 0 14px;
+      margin-bottom:34px;
     }
 
-    .section-subtitle{
-      text-align:center;
+    .section-kicker{
+      color:var(--cyan);
+      font-weight:1000;
+      text-transform:uppercase;
+      letter-spacing:1.4px;
+      font-size:13px;
+      margin-bottom:10px;
+    }
+
+    h2{
+      font-size:clamp(30px,4.8vw,48px);
+      line-height:1.05;
+      margin:0;
+      letter-spacing:-1.2px;
+    }
+
+    .section-text{
+      max-width:760px;
+      margin:14px auto 0;
       color:var(--muted);
-      max-width:720px;
-      margin:0 auto 35px;
       font-size:18px;
-      line-height:1.5;
+      line-height:1.55;
     }
 
     .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(245px,1fr));
       gap:18px;
     }
 
     .card{
-      background:linear-gradient(180deg,var(--card),var(--card2));
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:24px;
+      background:linear-gradient(180deg,rgba(16,36,63,.92),rgba(14,29,51,.92));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
       padding:24px;
-      box-shadow:0 18px 50px rgba(0,0,0,.22);
+      box-shadow:0 18px 55px rgba(0,0,0,.22);
     }
 
-    .card h3{margin-top:0;font-size:23px}
-    .card p,.card li{color:var(--muted);line-height:1.5}
-    .icon{font-size:38px;margin-bottom:12px;display:block}
+    .card h3{margin:0 0 10px;font-size:22px}
+    .card p,.card li{color:var(--muted);line-height:1.55}
+    .card p{margin:0}
+    .icon{font-size:38px;margin-bottom:14px;display:block}
+
+    .problem-solution{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .problem{border-color:rgba(251,113,133,.35)}
+    .solution{border-color:rgba(34,197,94,.38)}
+
+    .list-clean{
+      padding-left:20px;
+      margin-bottom:0;
+    }
 
     .steps{
+      display:grid;
+      gap:16px;
       counter-reset:step;
     }
 
     .step{
-      position:relative;
-      padding-left:68px;
-      margin-bottom:18px;
+      display:grid;
+      grid-template-columns:58px 1fr;
+      gap:16px;
+      align-items:start;
     }
 
     .step:before{
       counter-increment:step;
       content:counter(step);
-      position:absolute;
-      left:0;
-      top:0;
-      width:46px;
-      height:46px;
-      border-radius:50%;
+      width:54px;
+      height:54px;
+      border-radius:18px;
       background:linear-gradient(135deg,var(--blue),var(--cyan));
-      color:#00111c;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:900;
-      font-size:20px;
+      color:#03111f;
+      display:grid;
+      place-items:center;
+      font-size:24px;
+      font-weight:1000;
+      box-shadow:0 14px 28px rgba(32,231,255,.18);
     }
 
-    .price-card{
-      max-width:520px;
-      margin:auto;
+    .step h3{margin:0 0 6px;font-size:22px}
+    .step p{margin:0;color:var(--muted);line-height:1.5}
+
+    .interactive-panel{
+      display:grid;
+      grid-template-columns:.95fr 1.05fr;
+      gap:22px;
+      align-items:center;
+    }
+
+    .simulator{
+      background:#07111f;
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:18px;
+    }
+
+    .field{
+      margin-bottom:12px;
+    }
+
+    label{
+      display:block;
+      color:#dbeafe;
+      font-weight:900;
+      margin-bottom:7px;
+      font-size:14px;
+    }
+
+    input,select{
+      width:100%;
+      border:1px solid rgba(255,255,255,.12);
+      background:#0b1324;
+      color:white;
+      border-radius:16px;
+      padding:14px;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus,select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(32,231,255,.12)}
+
+    .result-box{
+      margin-top:16px;
+      padding:18px;
+      border-radius:22px;
+      background:linear-gradient(135deg,#0f766e,#16a34a);
+      min-height:88px;
+      display:grid;
+      place-items:center;
       text-align:center;
-      border:2px solid rgba(34,197,94,.5);
+      font-weight:1000;
+      font-size:20px;
+      line-height:1.35;
+    }
+
+    .video-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+      gap:18px;
+    }
+
+    .video-card{
+      background:rgba(5,9,20,.86);
+      border:1px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 18px 55px rgba(0,0,0,.25);
+    }
+
+    .video-frame{
       position:relative;
+      background:#000;
+      aspect-ratio:9/16;
+      display:grid;
+      place-items:center;
       overflow:hidden;
     }
 
+    .video-frame video,.video-frame iframe{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border:0;
+    }
+
+    .placeholder-video{
+      padding:20px;
+      text-align:center;
+      color:#dbeafe;
+      background:radial-gradient(circle at top,rgba(32,231,255,.25),transparent 46%),#020617;
+      width:100%;
+      height:100%;
+      display:grid;
+      place-items:center;
+    }
+
+    .placeholder-video strong{font-size:44px;display:block;margin-bottom:8px}
+    .video-info{padding:16px}
+    .video-info h3{margin:0 0 6px;font-size:18px}
+    .video-info p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+
+    .price-wrap{
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:20px;
+      align-items:center;
+    }
+
+    .price-card{
+      position:relative;
+      overflow:hidden;
+      border:2px solid rgba(34,197,94,.45);
+      text-align:center;
+    }
+
     .price-card:before{
-      content:"Oferta";
+      content:"OFERTA";
       position:absolute;
-      top:18px;
-      right:-38px;
+      right:-44px;
+      top:24px;
       transform:rotate(35deg);
       background:var(--yellow);
       color:#111827;
-      padding:8px 50px;
-      font-weight:900;
-    }
-
-    .price{
-      font-size:58px;
-      font-weight:900;
-      margin:10px 0;
-      color:#86efac;
+      font-weight:1000;
+      padding:8px 58px;
+      font-size:13px;
     }
 
     .old-price{
       color:#94a3b8;
       text-decoration:line-through;
+      font-weight:800;
       font-size:20px;
     }
 
-    .video-grid{
+    .price{
+      font-size:70px;
+      font-weight:1000;
+      color:#86efac;
+      margin:4px 0;
+      letter-spacing:-2px;
+    }
+
+    .price small{font-size:22px;color:#bbf7d0}
+
+    .included-list{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-      gap:18px;
+      gap:12px;
     }
 
-    .video-card{
-      background:#0b1324;
-      border-radius:22px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
+    .included-item{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.045);
+      border:1px solid var(--line);
+      color:#dbeafe;
+      font-weight:800;
     }
 
-    .video-card video,
-    .video-card iframe{
-      width:100%;
-      aspect-ratio:9/16;
-      border:0;
-      background:#000;
-      display:block;
-    }
+    .included-item span{color:#86efac;font-size:20px}
 
-    .video-card h3{
-      padding:14px 14px 0;
-      margin:0;
-      font-size:18px;
-    }
-
-    .video-card p{
-      padding:0 14px 16px;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.4;
+    .faq{
+      max-width:900px;
+      margin:auto;
     }
 
     .faq-item{
-      border-bottom:1px solid rgba(255,255,255,.08);
-      padding:14px 0;
+      border:1px solid var(--line);
+      border-radius:22px;
+      margin-bottom:12px;
+      background:rgba(16,36,63,.72);
+      overflow:hidden;
     }
 
     .faq-question{
@@ -321,337 +628,545 @@
       background:transparent;
       color:white;
       border:0;
+      padding:18px;
       text-align:left;
-      font-size:19px;
-      font-weight:900;
-      cursor:pointer;
-      padding:12px 0;
       display:flex;
       justify-content:space-between;
-      gap:12px;
+      align-items:center;
+      gap:14px;
+      cursor:pointer;
+      font-size:18px;
+      font-weight:1000;
     }
 
     .faq-answer{
-      color:var(--muted);
-      line-height:1.55;
       display:none;
-      padding-bottom:12px;
+      padding:0 18px 18px;
+      color:var(--muted);
+      line-height:1.6;
     }
 
     .faq-item.active .faq-answer{display:block}
+    .faq-item.active .faq-question span{transform:rotate(45deg)}
+    .faq-question span{transition:.2s;font-size:26px;color:var(--cyan)}
+
+    .cta{
+      border-radius:34px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(32,231,255,.35), transparent 30%),
+        linear-gradient(135deg,#0f766e,#1d4ed8 62%,#172554);
+      padding:46px 24px;
+      text-align:center;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.12);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .cta h2{max-width:760px;margin:auto}
+    .cta p{color:#e0f2fe;max-width:760px;margin:16px auto 26px;font-size:19px;line-height:1.5}
+
+    .notice{
+      margin-top:18px;
+      padding:15px;
+      border-radius:18px;
+      background:rgba(253,224,71,.10);
+      border:1px solid rgba(253,224,71,.34);
+      color:#fef3c7;
+      line-height:1.5;
+      font-size:14px;
+    }
 
     .floating-whatsapp{
       position:fixed;
       right:18px;
       bottom:18px;
-      width:62px;
-      height:62px;
+      width:64px;
+      height:64px;
       border-radius:50%;
-      background:var(--green);
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--green),var(--green2));
       color:white;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:32px;
       text-decoration:none;
-      box-shadow:0 12px 35px rgba(34,197,94,.42);
-      z-index:200;
-      animation:bounce 1.8s infinite;
+      font-size:31px;
+      box-shadow:0 18px 38px rgba(34,197,94,.35);
+      z-index:999;
+      animation:float 1.9s infinite ease-in-out;
     }
 
-    @keyframes bounce{
+    @keyframes float{
       0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-7px)}
-    }
-
-    .cta{
-      text-align:center;
-      background:linear-gradient(135deg,#0f766e,#1d4ed8);
-      border-radius:28px;
-      padding:42px 22px;
-      box-shadow:0 25px 80px rgba(0,0,0,.35);
-    }
-
-    .warning{
-      background:rgba(250,204,21,.1);
-      border:1px solid rgba(250,204,21,.4);
-      color:#fef3c7;
-      padding:14px;
-      border-radius:18px;
-      line-height:1.5;
-      max-width:780px;
-      margin:22px auto 0;
+      50%{transform:translateY(-8px)}
     }
 
     footer{
-      text-align:center;
-      padding:34px 18px 90px;
+      border-top:1px solid var(--line);
+      padding:36px 0 98px;
       color:#94a3b8;
-      border-top:1px solid rgba(255,255,255,.08);
+      text-align:center;
+      line-height:1.6;
+    }
+
+    .footer-brand{
+      color:#fff;
+      font-weight:1000;
+      font-size:20px;
+    }
+
+    @media(max-width:900px){
+      .hero-grid,.problem-solution,.interactive-panel,.price-wrap{grid-template-columns:1fr}
+      .hero{text-align:center;padding-top:46px}
+      .lead{margin-left:auto;margin-right:auto}
+      .hero-actions,.trust-row{justify-content:center}
+      .demo-card{max-width:440px;margin:auto}
     }
 
     @media(max-width:760px){
       .nav{display:none}
-      .hero{padding-top:45px}
-      .btn{width:100%;max-width:350px}
-      .price-card:before{font-size:12px;right:-42px}
+      .topbar-inner{min-height:66px}
+      .hero-actions .btn{width:100%}
+      .phone{min-height:510px}
+      .price{font-size:58px}
+      .price-card:before{right:-48px;top:20px}
+      .step{grid-template-columns:48px 1fr}
+      .step:before{width:46px;height:46px;border-radius:15px}
     }
   </style>
 </head>
 
 <body>
-  <!-- CAMBIA AQUÍ TU NÚMERO DE WHATSAPP -->
-  <!-- Ejemplo Perú: 51987654321 -->
+  <!-- =========================================================
+    CONFIGURACIÓN RÁPIDA
+    1) Cambia NUMERO_WHATSAPP por tu número real.
+    2) Cambia PRECIO_ACTUAL si quieres otro precio.
+    3) Sube tus videos a una carpeta llamada /videos con estos nombres:
+       video1.mp4, video2.mp4, video3.mp4, video4.mp4, video5.mp4
+  ========================================================== -->
   <script>
     const NUMERO_WHATSAPP = "51999999999";
-    const MENSAJE_WHATSAPP = "Hola, quiero información sobre Aviso de Pago por Voz";
+    const MENSAJE_WHATSAPP = "Hola, quiero comprar o recibir información sobre Aviso de Pago por Voz";
+    const PRECIO_ACTUAL = "10";
   </script>
-
-  <div class="topbar">
-    <div class="brand"><div class="logo">IV</div> Ivatronics</div>
-    <nav class="nav">
-      <a href="#funciona">Cómo funciona</a>
-      <a href="#videos">Videos</a>
-      <a href="#precio">Precio</a>
-      <a href="#preguntas">Preguntas</a>
-    </nav>
-  </div>
 
   <a class="floating-whatsapp whatsapp-link" href="#" aria-label="WhatsApp">☎</a>
 
-  <header class="hero">
-    <div class="badge">Aplicativo para negocios y emprendedores</div>
-    <h1><span class="gradient-text">Aviso de Pago por Voz</span></h1>
-    <p class="subtitle">
-      Tu celular anuncia automáticamente cuando recibes un pago. Ideal para no estar revisando el teléfono a cada rato mientras atiendes tu negocio.
-    </p>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#inicio">
+        <div class="brand-mark">IV</div>
+        <div>
+          Ivatronics
+          <small>Tecnología para vender mejor</small>
+        </div>
+      </a>
 
-    <div class="hero-actions">
-      <a class="btn btn-whatsapp whatsapp-link" href="#">Comprar por WhatsApp</a>
-      <a class="btn btn-demo" href="#videos">Ver videos</a>
-    </div>
+      <nav class="nav">
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#simulador">Probar</a>
+        <a href="#videos">Videos</a>
+        <a href="#precio">Precio</a>
+        <a href="#faq">Preguntas</a>
+      </nav>
 
-    <div class="phone-demo">
-      <div class="notification">
-        <strong>🔔 Nueva notificación</strong><br>
-        Pago recibido de Cliente por S/ 20.00
-      </div>
-      <div class="voice-box" id="voiceText">🔊 “Has recibido un pago de veinte soles”</div>
-      <br>
-      <button class="btn btn-blue" onclick="probarVoz()">Probar ejemplo</button>
-    </div>
-
-    <div class="warning">
-      Nota: esta página es para explicar el funcionamiento del aplicativo. La instalación y activación se coordinan por WhatsApp.
+      <a class="mini-whatsapp whatsapp-link" href="#">WhatsApp</a>
     </div>
   </header>
 
-  <section id="beneficios">
-    <h2 class="section-title">¿Por qué te ayuda?</h2>
-    <p class="section-subtitle">Pensado para negocios donde el dueño o trabajador necesita escuchar el aviso sin tocar el celular.</p>
+  <main id="inicio">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">🔊 App para negocios que reciben pagos digitales</div>
+          <h1>Tu celular anuncia tus <span class="grad">pagos por voz</span></h1>
+          <p class="lead">
+            Con <strong>Aviso de Pago por Voz</strong>, cuando llega una notificación de pago, tu celular lo anuncia en voz alta para que confirmes rápido sin dejar de atender.
+          </p>
 
-    <div class="grid">
-      <div class="card">
-        <span class="icon">🔊</span>
-        <h3>Habla automáticamente</h3>
-        <p>Cuando llega la notificación de pago, el celular anuncia el mensaje en voz alta.</p>
-      </div>
-      <div class="card">
-        <span class="icon">⏱️</span>
-        <h3>Ahorra tiempo</h3>
-        <p>No necesitas abrir la app del banco o billetera a cada momento para confirmar.</p>
-      </div>
-      <div class="card">
-        <span class="icon">🏪</span>
-        <h3>Ideal para negocios</h3>
-        <p>Útil para bodegas, tiendas, delivery, restaurantes, mototaxis, ferias y ventas rápidas.</p>
-      </div>
-      <div class="card">
-        <span class="icon">📱</span>
-        <h3>Fácil de usar</h3>
-        <p>Se activa una vez y queda funcionando en segundo plano, según la configuración del equipo.</p>
-      </div>
-    </div>
-  </section>
+          <div class="hero-actions">
+            <a class="btn btn-whatsapp whatsapp-link" href="#">💬 Comprar por WhatsApp</a>
+            <a class="btn btn-light" href="#videos">▶ Ver demostraciones</a>
+            <a class="btn btn-outline" href="#como-funciona">📌 Cómo funciona</a>
+          </div>
 
-  <section id="funciona">
-    <h2 class="section-title">¿Cómo funciona?</h2>
-    <p class="section-subtitle">El proceso es simple y fácil de entender para el cliente.</p>
+          <div class="trust-row">
+            <div class="trust-pill">✅ Pago único</div>
+            <div class="trust-pill">✅ Soporte por WhatsApp</div>
+            <div class="trust-pill">✅ Ideal para negocios</div>
+          </div>
+        </div>
 
-    <div class="card steps">
-      <div class="step">
-        <h3>Llega una notificación de pago</h3>
-        <p>Cuando el celular recibe la alerta del pago, el aplicativo la detecta.</p>
-      </div>
-      <div class="step">
-        <h3>La app interpreta el mensaje</h3>
-        <p>Reconoce el nombre y el monto para convertirlo en una frase entendible.</p>
-      </div>
-      <div class="step">
-        <h3>El celular lo anuncia con voz</h3>
-        <p>Por ejemplo: “Has recibido un pago de veinte soles”.</p>
-      </div>
-      <div class="step">
-        <h3>Tú atiendes tranquilo</h3>
-        <p>Escuchas la confirmación sin dejar de atender al cliente.</p>
-      </div>
-    </div>
-  </section>
+        <div class="demo-card">
+          <div class="phone">
+            <div class="phone-top"></div>
+            <div class="screen-title">
+              <span><span class="status-dot"></span>App activa</span>
+              <span>🔋 100%</span>
+            </div>
 
-  <section id="videos">
-    <h2 class="section-title">Videos demostrativos</h2>
-    <p class="section-subtitle">Aquí puedes colocar 5 videos: demostración, instalación, prueba en negocio, configuración y testimonios.</p>
+            <div class="pay-notification">
+              <strong>🔔 Nueva notificación</strong>
+              <span>Pago recibido de Cliente por S/ 20.00</span>
+            </div>
 
-    <div class="video-grid">
-      <div class="video-card">
-        <!-- Cambia src por tu video: videos/video1.mp4 -->
-        <video controls poster="imagenes/poster1.jpg">
-          <source src="videos/video1.mp4" type="video/mp4">
-        </video>
-        <h3>Video 1: Demostración</h3>
-        <p>Cómo suena el aviso cuando llega un pago.</p>
+            <div class="speaker" id="heroVoice">🔊 “Has recibido un pago de veinte soles”</div>
+
+            <div class="volume-bars" aria-hidden="true">
+              <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+
+            <button class="btn btn-blue" style="width:100%" onclick="cambiarEjemplo()">Probar otro aviso</button>
+            <p class="phone-note">Ejemplo visual. El funcionamiento real depende de los permisos y configuración del celular.</p>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="video-card">
-        <video controls poster="imagenes/poster2.jpg">
-          <source src="videos/video2.mp4" type="video/mp4">
-        </video>
-        <h3>Video 2: Instalación</h3>
-        <p>Explicación rápida de cómo se instala.</p>
+    <section>
+      <div class="container">
+        <div class="problem-solution">
+          <div class="card problem">
+            <span class="icon">😟</span>
+            <h3>El problema</h3>
+            <ul class="list-clean">
+              <li>El cliente dice que ya pagó.</li>
+              <li>Tienes que revisar el celular a cada rato.</li>
+              <li>Puedes confundirte si estás atendiendo rápido.</li>
+              <li>Pierdes tiempo confirmando cada pago.</li>
+            </ul>
+          </div>
+
+          <div class="card solution">
+            <span class="icon">🚀</span>
+            <h3>La solución</h3>
+            <ul class="list-clean">
+              <li>El celular anuncia el pago con voz.</li>
+              <li>Escuchas el monto sin tocar el equipo.</li>
+              <li>Atiendes más rápido y con más seguridad.</li>
+              <li>Ideal para negocios con mucho movimiento.</li>
+            </ul>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="video-card">
-        <video controls poster="imagenes/poster3.jpg">
-          <source src="videos/video3.mp4" type="video/mp4">
-        </video>
-        <h3>Video 3: Uso en negocio</h3>
-        <p>Ejemplo real atendiendo clientes.</p>
+    <section id="beneficios">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Beneficios</div>
+          <h2>Hecho para vender sin perder tiempo</h2>
+          <p class="section-text">El cliente entiende rápido para qué sirve, cuándo usarlo y por qué le conviene instalarlo.</p>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <span class="icon">🔊</span>
+            <h3>Aviso en voz alta</h3>
+            <p>Cuando llega una notificación de pago, el aplicativo anuncia el mensaje para que puedas escucharlo.</p>
+          </div>
+          <div class="card">
+            <span class="icon">🏪</span>
+            <h3>Para negocios</h3>
+            <p>Perfecto para bodegas, restaurantes, tiendas, delivery, mototaxis, ferias y emprendedores.</p>
+          </div>
+          <div class="card">
+            <span class="icon">⚡</span>
+            <h3>Atención rápida</h3>
+            <p>No tienes que abrir el celular a cada momento. Escuchas el aviso y sigues atendiendo.</p>
+          </div>
+          <div class="card">
+            <span class="icon">🛠️</span>
+            <h3>Soporte inicial</h3>
+            <p>Te ayudamos por WhatsApp con la instalación, permisos y prueba inicial de funcionamiento.</p>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="video-card">
-        <video controls poster="imagenes/poster4.jpg">
-          <source src="videos/video4.mp4" type="video/mp4">
-        </video>
-        <h3>Video 4: Configuración</h3>
-        <p>Cómo activar permisos y probar la voz.</p>
+    <section id="como-funciona">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Funcionamiento</div>
+          <h2>¿Cómo funciona la aplicación?</h2>
+          <p class="section-text">Explicado de forma sencilla para que cualquier cliente lo entienda antes de comprar.</p>
+        </div>
+
+        <div class="card steps">
+          <div class="step">
+            <div>
+              <h3>Recibes una notificación</h3>
+              <p>Cuando llega el aviso de pago al celular, la app detecta esa notificación.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3>La app lee el texto</h3>
+              <p>Identifica el mensaje recibido y prepara una frase clara para anunciarlo.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3>Convierte el monto a voz</h3>
+              <p>El aplicativo puede decir el monto de forma entendible para el usuario.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3>El celular habla</h3>
+              <p>Escuchas el aviso en voz alta y puedes confirmar el pago sin detener tu atención.</p>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="video-card">
-        <video controls poster="imagenes/poster5.jpg">
-          <source src="videos/video5.mp4" type="video/mp4">
-        </video>
-        <h3>Video 5: Opiniones</h3>
-        <p>Comentarios o prueba de clientes.</p>
+    <section id="simulador">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Interactivo</div>
+          <h2>Prueba cómo sonaría el aviso</h2>
+          <p class="section-text">Esta parte ayuda al cliente a imaginar cómo funcionará en su negocio.</p>
+        </div>
+
+        <div class="card interactive-panel">
+          <div>
+            <h3>Simulador de aviso</h3>
+            <p style="color:var(--muted);line-height:1.55">Escribe un nombre y monto para ver el mensaje que podría anunciar el celular.</p>
+
+            <div class="simulator">
+              <div class="field">
+                <label for="nombreCliente">Nombre del cliente</label>
+                <input id="nombreCliente" type="text" value="Carlos" placeholder="Ejemplo: Carlos" oninput="actualizarSimulador()" />
+              </div>
+              <div class="field">
+                <label for="montoPago">Monto</label>
+                <input id="montoPago" type="number" value="20" placeholder="Ejemplo: 20" oninput="actualizarSimulador()" />
+              </div>
+              <button class="btn btn-blue" style="width:100%" onclick="actualizarSimulador()">Generar aviso</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="result-box" id="resultadoSimulador">🔊 “Has recibido un pago de Carlos por 20 soles”</div>
+            <div class="notice">
+              Importante: este simulador es demostrativo. En la app real, el aviso se genera desde la notificación recibida en el celular.
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="incluye">
-    <h2 class="section-title">¿Qué incluye?</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>✅ Aplicativo</h3>
-        <p>Instalación del aplicativo Aviso de Pago por Voz.</p>
+    <section id="videos">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Demostraciones</div>
+          <h2>5 videos para convencer al cliente</h2>
+          <p class="section-text">Sube tus videos a GitHub en la carpeta <strong>videos</strong>. Mantén los nombres indicados para que aparezcan aquí.</p>
+        </div>
+
+        <div class="video-grid">
+          <div class="video-card">
+            <div class="video-frame">
+              <video controls preload="metadata" poster="imagenes/poster1.jpg">
+                <source src="videos/video1.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="video-info">
+              <h3>1. Demostración real</h3>
+              <p>Muestra cómo suena el aviso cuando llega un pago.</p>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="video-frame">
+              <video controls preload="metadata" poster="imagenes/poster2.jpg">
+                <source src="videos/video2.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="video-info">
+              <h3>2. Instalación</h3>
+              <p>Explica cómo se instala y qué permisos necesita.</p>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="video-frame">
+              <video controls preload="metadata" poster="imagenes/poster3.jpg">
+                <source src="videos/video3.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="video-info">
+              <h3>3. Uso en negocio</h3>
+              <p>Ideal para enseñar cómo ayuda mientras atiendes.</p>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="video-frame">
+              <video controls preload="metadata" poster="imagenes/poster4.jpg">
+                <source src="videos/video4.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="video-info">
+              <h3>4. Configuración</h3>
+              <p>Muestra botones, volumen, prueba de voz y activación.</p>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="video-frame">
+              <video controls preload="metadata" poster="imagenes/poster5.jpg">
+                <source src="videos/video5.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="video-info">
+              <h3>5. Opinión o prueba</h3>
+              <p>Puedes poner testimonio, comparación o explicación final.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice">
+          Si tus videos pesan mucho, conviene subirlos a YouTube o TikTok y luego reemplazar los videos por enlaces insertados. Para GitHub, videos muy pesados pueden demorar en cargar.
+        </div>
       </div>
-      <div class="card">
-        <h3>✅ Guía de activación</h3>
-        <p>Te indicamos cómo dar los permisos necesarios para que funcione correctamente.</p>
+    </section>
+
+    <section id="precio">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Precio</div>
+          <h2>Oferta simple y clara</h2>
+          <p class="section-text">El cliente ve rápido cuánto cuesta, qué incluye y cómo comprar.</p>
+        </div>
+
+        <div class="price-wrap">
+          <div class="card price-card">
+            <h3>Activación del aplicativo</h3>
+            <div class="old-price">Antes S/ 20</div>
+            <div class="price">S/ <span id="precioTexto">10</span></div>
+            <p style="color:var(--muted);line-height:1.5">Pago único por instalación y activación inicial.</p>
+            <a class="btn btn-whatsapp whatsapp-link" href="#">💬 Comprar ahora</a>
+          </div>
+
+          <div class="card">
+            <h3>¿Qué incluye?</h3>
+            <div class="included-list">
+              <div class="included-item"><span>✅</span> Aplicativo Aviso de Pago por Voz</div>
+              <div class="included-item"><span>✅</span> Guía para activar permisos necesarios</div>
+              <div class="included-item"><span>✅</span> Prueba de voz inicial</div>
+              <div class="included-item"><span>✅</span> Soporte por WhatsApp para instalación</div>
+              <div class="included-item"><span>✅</span> Recomendaciones para que no se cierre en segundo plano</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card">
-        <h3>✅ Soporte inicial</h3>
-        <p>Ayuda por WhatsApp para dejarlo funcionando en tu celular.</p>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-kicker">Dudas frecuentes</div>
+          <h2>Preguntas que hará el cliente</h2>
+          <p class="section-text">Esta sección reduce dudas y ayuda a que te escriban más decididos por WhatsApp.</p>
+        </div>
+
+        <div class="faq">
+          <div class="faq-item active">
+            <button class="faq-question">¿Funciona con pantalla apagada? <span>+</span></button>
+            <div class="faq-answer">Sí, puede funcionar en segundo plano. En algunos celulares se deben configurar permisos de batería para evitar que el sistema cierre la app.</div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">¿Necesita permisos especiales? <span>+</span></button>
+            <div class="faq-answer">Sí. Para leer los avisos, el usuario debe activar el acceso a notificaciones y permitir que la app funcione correctamente.</div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">¿Sirve para cualquier negocio? <span>+</span></button>
+            <div class="faq-answer">Sí. Es útil para bodegas, tiendas, restaurantes, delivery, mototaxis, ferias, vendedores y cualquier negocio que recibe pagos digitales.</div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">¿La instalación es complicada? <span>+</span></button>
+            <div class="faq-answer">No. Se entrega una guía y se brinda soporte inicial por WhatsApp para dejarlo funcionando.</div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">¿Puedo cambiar el volumen o probar la voz? <span>+</span></button>
+            <div class="faq-answer">Sí. La app puede incluir prueba de voz, volumen y configuración según la versión instalada.</div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">¿Cómo compro? <span>+</span></button>
+            <div class="faq-answer">Presiona el botón de WhatsApp, escribe tu consulta y se coordina el pago, instalación y activación.</div>
+          </div>
+        </div>
       </div>
-      <div class="card">
-        <h3>✅ Prueba de voz</h3>
-        <p>Verificamos que el celular anuncie correctamente el aviso.</p>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta">
+          <h2>Convierte tu celular en un avisador de pagos</h2>
+          <p>Evita estar revisando el teléfono a cada rato. Atiende más rápido y escucha tus pagos con voz.</p>
+          <a class="btn btn-whatsapp whatsapp-link" href="#">💬 Quiero información por WhatsApp</a>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section id="precio">
-    <h2 class="section-title">Precio</h2>
-    <p class="section-subtitle">Puedes cambiar este precio cuando quieras editando el texto del código.</p>
-
-    <div class="card price-card">
-      <h3>Paquete de activación</h3>
-      <div class="old-price">Antes S/ 20</div>
-      <div class="price">S/ 10</div>
-      <p>Pago único por activación e instalación inicial.</p>
-      <a class="btn btn-whatsapp whatsapp-link" href="#">Quiero comprar ahora</a>
-    </div>
-  </section>
-
-  <section id="preguntas">
-    <h2 class="section-title">Preguntas frecuentes</h2>
-    <p class="section-subtitle">Esto ayuda a que el cliente entienda antes de escribirte.</p>
-
-    <div class="card">
-      <div class="faq-item active">
-        <button class="faq-question">¿Funciona con la pantalla apagada? <span>+</span></button>
-        <div class="faq-answer">Sí, puede funcionar en segundo plano. En algunos celulares se deben activar permisos de batería para que no se cierre.</div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">¿Necesita internet? <span>+</span></button>
-        <div class="faq-answer">Necesita recibir la notificación del pago. La voz puede depender de la configuración de voz del celular.</div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">¿Sirve para cualquier negocio? <span>+</span></button>
-        <div class="faq-answer">Sí. Es ideal para negocios donde se reciben pagos digitales y se necesita confirmar rápido.</div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">¿Cómo se instala? <span>+</span></button>
-        <div class="faq-answer">La instalación se coordina por WhatsApp. Te damos las indicaciones y revisamos que quede funcionando.</div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">¿Puedo probar antes? <span>+</span></button>
-        <div class="faq-answer">Puedes ver los videos demostrativos de esta página. Para prueba real, escríbenos por WhatsApp.</div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="cta">
-      <h2 class="section-title">¿Quieres que tu celular anuncie tus pagos?</h2>
-      <p class="section-subtitle" style="color:#e0f2fe">Escríbenos por WhatsApp y te ayudamos con la instalación.</p>
-      <a class="btn btn-whatsapp whatsapp-link" href="#">Escribir por WhatsApp</a>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <footer>
-    <strong>Ivatronics</strong><br>
-    Tecnología para negocios y emprendedores.<br>
-    © 2026 - Aviso de Pago por Voz
+    <div class="container">
+      <div class="footer-brand">Ivatronics</div>
+      Tecnología, innovación y herramientas para emprendedores.<br>
+      © 2026 - Aviso de Pago por Voz
+    </div>
   </footer>
 
   <script>
-    function actualizarWhatsApp(){
+    function configurarWhatsApp(){
       const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(MENSAJE_WHATSAPP)}`;
-      document.querySelectorAll('.whatsapp-link').forEach(a => a.href = url);
+      document.querySelectorAll('.whatsapp-link').forEach(link => link.href = url);
     }
-    actualizarWhatsApp();
 
-    const frases = [
+    function configurarPrecio(){
+      const precio = document.getElementById('precioTexto');
+      if(precio) precio.textContent = PRECIO_ACTUAL;
+    }
+
+    const ejemplos = [
       '🔊 “Has recibido un pago de veinte soles”',
-      '🔊 “Pago confirmado de Juan por diez soles”',
+      '🔊 “Pago confirmado de Carlos por diez soles”',
       '🔊 “Nuevo pago recibido correctamente”',
-      '🔊 “Has recibido un pago de cincuenta soles”'
+      '🔊 “Has recibido un pago de cincuenta soles”',
+      '🔊 “Pago recibido. Verifica tu venta”'
     ];
-    let indice = 0;
-    function probarVoz(){
-      indice = (indice + 1) % frases.length;
-      document.getElementById('voiceText').textContent = frases[indice];
+    let ejemploActual = 0;
+
+    function cambiarEjemplo(){
+      ejemploActual = (ejemploActual + 1) % ejemplos.length;
+      document.getElementById('heroVoice').textContent = ejemplos[ejemploActual];
     }
 
-    document.querySelectorAll('.faq-question').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const item = btn.parentElement;
-        item.classList.toggle('active');
+    function actualizarSimulador(){
+      const nombre = document.getElementById('nombreCliente').value.trim() || 'Cliente';
+      const monto = document.getElementById('montoPago').value.trim() || '0';
+      document.getElementById('resultadoSimulador').textContent = `🔊 “Has recibido un pago de ${nombre} por ${monto} soles”`;
+    }
+
+    function activarPreguntas(){
+      document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+          btn.parentElement.classList.toggle('active');
+        });
       });
-    });
+    }
+
+    configurarWhatsApp();
+    configurarPrecio();
+    actualizarSimulador();
+    activarPreguntas();
   </script>
 </body>
 </html>
