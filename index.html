@@ -1149,12 +1149,43 @@
       document.getElementById('heroVoice').textContent = ejemplos[ejemploActual];
     }
 
-    function actualizarSimulador(){
-      const nombre = document.getElementById('nombreCliente').value.trim() || 'Cliente';
-      const monto = document.getElementById('montoPago').value.trim() || '0';
-      document.getElementById('resultadoSimulador').textContent = `🔊 “Has recibido un pago de ${nombre} por ${monto} soles”`;
-      hablar(`Has recibido un pago de ${nombre} por ${monto} soles`);
-    }
+function actualizarSimulador(){
+
+  const nombre =
+  document.getElementById('nombreCliente').value.trim() || 'Cliente';
+
+  const montoTexto =
+  document.getElementById('montoPago').value.trim() || '0';
+
+  const monto = parseFloat(montoTexto);
+
+  let mensajeMonto = '';
+
+  const soles = Math.floor(monto);
+
+  const centimos =
+  Math.round((monto - soles) * 100);
+
+  // SOLES
+  if(soles === 1){
+    mensajeMonto += '1 sol';
+  }else{
+    mensajeMonto += `${soles} soles`;
+  }
+
+  // CENTIMOS
+  if(centimos > 0){
+    mensajeMonto += ` con ${centimos} céntimos`;
+  }
+
+  const mensaje =
+  `Has recibido un pago de ${nombre} por ${mensajeMonto}`;
+
+  document.getElementById('resultadoSimulador').textContent =
+  `🔊 “${mensaje}”`;
+
+  hablar(mensaje);
+}
 function hablar(texto){
 
   const voz = new SpeechSynthesisUtterance(texto);
