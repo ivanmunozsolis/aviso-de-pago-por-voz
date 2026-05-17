@@ -1153,8 +1153,19 @@
       const nombre = document.getElementById('nombreCliente').value.trim() || 'Cliente';
       const monto = document.getElementById('montoPago').value.trim() || '0';
       document.getElementById('resultadoSimulador').textContent = `🔊 “Has recibido un pago de ${nombre} por ${monto} soles”`;
+      hablar(`Has recibido un pago de ${nombre} por ${monto} soles`);
     }
+function hablar(texto){
 
+  const voz = new SpeechSynthesisUtterance(texto);
+
+  voz.lang = "es-PE";
+  voz.rate = 0.9;
+  voz.pitch = 1;
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(voz);
+}
     function activarPreguntas(){
       document.querySelectorAll('.faq-question').forEach(btn => {
         btn.addEventListener('click', () => {
